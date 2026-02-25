@@ -91,6 +91,10 @@ public class BankRunner
                         System.out.print(transactionHistory.get(i) + ", "); 
                     }
                 }
+                else
+                {
+                    System.out.println("No transactions yet.");
+                }
             }
             else if (function.equals("6") || function.equals("End Simulator") || function.equals("end simulator"))
             {
