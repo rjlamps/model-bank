@@ -3,31 +3,73 @@ import java.util.ArrayList;
 
 public class BankRunner 
 {
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         Scanner input = new Scanner(System.in);
+        AuthSystem auth = new AuthSystem();
         boolean isWorking = true;
         BankSystem bank = new BankSystem();
+        bank.loadAccounts();
+        auth.loadUsers();
         System.out.println("Welcome to the Bank Simulator!");
-        System.out.print("Please enter your full name: ");
-        String nameMain = input.nextLine();
-        Account userAccount = bank.findAccount(nameMain);
 
+        Account userAccount = null;
+        User currentUser = null;
+        
+        while (userAccount == null)
+        {
+            System.out.print("Username: ");
+            String nameMain = input.nextLine();
+            System.out.print("Password: ");
+            String passwordMain = input.nextLine();
+        
+            currentUser = auth.login(nameMain, passwordMain);
+            if (currentUser != null)
+            {
+                userAccount = bank.findAccountByID(currentUser.getAccountID());
+                System.out.println("Welcome " + userAccount.getName() + "!");
+            }
+            else
+            {
+                System.out.println("Incorrect username and password");
+                System.out.print("Type 'Retry to try again', 'Create Account' to make an account, or 'Quit':");
+                String accountDecision = input.nextLine().trim().toLowerCase();
+                if (accountDecision.equals("retry"))
+                {
+
+                }
+                else if (accountDecision.equals("create account"))
+                {
+                    System.out.print("What would you like as your username? ");
+                    nameMain = input.nextLine();
+                    System.out.print("What about your password? ");
+                    passwordMain = input.nextLine();
+                    System.out.println("How much money would you like to start with? ");
+                    double startingBalance = input.nextDouble();
+                    input.nextLine();
+                
+                    userAccount = new Account(nameMain, startingBalance);
+                    bank.addAccount(userAccount);
+                
+                    currentUser  = new User(nameMain, passwordMain, userAccount.getID());
+                    auth.addUser(currentUser);
+                
+                    System.out.println("Welcome " + currentUser.getUsername() + "!");
+                }
+                else if (accountDecision.equals("quit"))
+                {
+                    System.out.println("Goodbye");
+                    return;
+                }
+                else
+                {
+                    System.out.println("Invalid Choice");
+                }
+            
+            }
+        }
         ArrayList<String> transactionHistory = new ArrayList<String>(); //make sure to add transactions 
-        if (userAccount != null)
-        {
-            System.out.println("Welcome " + userAccount.getName() + "!");
-        }
-        else
-        {
-            System.out.println("Looks like you don't have an account with us.");
-            System.out.println("How much money would you like to start with?");
-            double startMoney = input.nextDouble();
-            input.nextLine();
-            userAccount = new Account(nameMain, startMoney);
-            bank.addAccount(userAccount);
-
-        }
+        
         while (isWorking == true)
         {
             System.out.println("");
@@ -106,6 +148,5 @@ public class BankRunner
                 System.out.println("Invalid option. Please try again.");
             }
         }
-        
     }
 }

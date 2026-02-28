@@ -2,12 +2,21 @@ public class Account
 {
     private String name;
     private int id;
-    private double balance;      
+    private static int nextId = 1;
+    private double balance;
     
     public Account(String name, double balance)
     {
         this.name = name;
-        id = (int)(Math.random()*10000 + 1);
+        id = nextId;
+        this.balance = balance;
+        nextId++;
+    }
+
+    public Account(int id, String name, double balance)
+    {
+        this.id = id;
+        this.name = name;
         this.balance = balance;
     }
 
@@ -18,6 +27,11 @@ public class Account
     public void setBalance(double balance)
     {
         this.balance = balance;
+    }
+
+    public static void setNextId(int id)
+    {
+        nextId = id;
     }
 
     public String getName()
