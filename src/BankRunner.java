@@ -32,7 +32,7 @@ public class BankRunner
             else
             {
                 System.out.println("Incorrect username and password");
-                System.out.print("Type 'Retry to try again', 'Create Account' to make an account, or 'Quit':");
+                System.out.print("Type 'Retry to try again', 'Create Account' to make an account, or 'Quit': ");
                 String accountDecision = input.nextLine().trim().toLowerCase();
                 if (accountDecision.equals("retry"))
                 {
@@ -130,7 +130,7 @@ public class BankRunner
                 {    
                     for (int i = 0; i < transactionHistory.size(); i++)
                     {
-                        System.out.print(transactionHistory.get(i) + ", "); 
+                        System.out.println("-" + transactionHistory.get(i)); 
                     }
                 }
                 else
@@ -142,6 +142,8 @@ public class BankRunner
             {
                 isWorking = false;
                 System.out.println("Simulator ended. The balance of account " + userAccount.getID() + " is " + userAccount.getBalance() + ".");
+                bank.saveAccounts();
+                auth.saveUsers();
             }
             else
             {
